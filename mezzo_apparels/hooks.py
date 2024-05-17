@@ -227,4 +227,4 @@ doctype_list_js = {"Item": "public/js/item_list.js", "Stock Reconciliation": "pu
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
-fixtures = [{"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]}, {"dt": "Item Attribute"}, {"dt": "Price List"}]
+# fixtures = [{"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]}, {"dt": "Item Attribute"}, {"dt": "Price List"}]
