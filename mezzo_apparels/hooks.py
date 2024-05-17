@@ -29,7 +29,10 @@ app_license = "mit"
 
 # include js in doctype views
 doctype_js = {"Sales Order": "public/js/sales_order.js", "Item": "public/js/item.js"}
-doctype_list_js = {"Item": "public/js/item_list.js", "Stock Reconciliation": "public/js/stock_reconciliation_list.js"}
+doctype_list_js = {
+    "Item": "public/js/item_list.js",
+    "Stock Reconciliation": "public/js/stock_reconciliation_list.js",
+}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -227,4 +230,9 @@ doctype_list_js = {"Item": "public/js/item_list.js", "Stock Reconciliation": "pu
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
-# fixtures = [{"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]}, {"dt": "Item Attribute"}, {"dt": "Price List"}]
+# fixtures = [
+    # {"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]},
+    # {"dt": "Item Attribute"},
+    # {"dt": "Price List"},
+    # {"dt": "Letter Head"},
+# ]
