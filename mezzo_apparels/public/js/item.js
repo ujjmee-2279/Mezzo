@@ -1,4 +1,13 @@
 frappe.ui.form.on("Item", {
+
+  onload: function(frm) {
+    if (!frm.doc.custom_barcode) {
+      // Generate a random 6-digit number
+      var random_number = Math.floor(100000 + Math.random() * 900000);
+      // Set the random number to the custom_barcode field
+      frm.set_value('custom_barcode', random_number);
+    }
+  },
   custom_barcode: function (frm, cdt, cdn) {
     frappe.call({
       method: "mezzo_apparels.utils.barcode_datasrc.generate_barcode",
