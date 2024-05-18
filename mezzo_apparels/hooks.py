@@ -231,8 +231,8 @@ doctype_list_js = {
 # }
 
 # fixtures = [
-    # {"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]},
-    # {"dt": "Item Attribute"},
-    # {"dt": "Price List"},
-    # {"dt": "Letter Head"},
+#     # {"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]},
+#     # {"dt": "Item Attribute"},
+#     # {"dt": "Price List"},
+#     {"dt": "Letter Head"},
 # ]
