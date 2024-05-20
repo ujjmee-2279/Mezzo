@@ -15,16 +15,11 @@ frappe.listview_settings["Item"] = {
           {
             label: "Print Format",
             fieldname: "print_format",
-            fieldtype: "Link",
-            options: "Print Format",
-            get_query: function () {
-              // Define your filter query here
-              return {
-                filters: {
-                  doc_type: "Item",
-                },
-              };
-            },
+            fieldtype: "Select",
+            options: [
+              { label : "Item Barcode Print" , value : "Item Barcode Print"},
+              { label : "Stock Wise Print", value : "Stock Wise Print" },
+            ],
           },
           {
             label: "Page Size",
@@ -72,6 +67,7 @@ frappe.listview_settings["Item"] = {
               { label: "FG Barcode", value: "FG Barcode" },
               { label: "Material Barcode", value: "Material Barcode" },
             ],
+            depends_on: "eval:doc.page_size === 'Custom'",
             onchange: function () {
               let select_val = document.querySelector("select[data-fieldname='type']").value;
               let page_height_val = document.querySelector("input[data-fieldname='page_height']");
@@ -112,7 +108,7 @@ frappe.listview_settings["Item"] = {
           // Handle logic to fetch selected values and call the API
           // Example:
           fetchBarcodePrint(selected_ids, values);
-          d.hide();
+          // d.hide();
         },
       });
       d.show();
