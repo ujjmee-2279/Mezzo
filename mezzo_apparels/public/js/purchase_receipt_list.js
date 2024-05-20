@@ -156,10 +156,32 @@ frappe.listview_settings["Purchase Receipt"] = {
           // Handle logic to fetch selected values and call the API
           // Example:
           fetchBarcodePrint(selected_ids, values);
-          d.hide();
+        //   d.hide();
         },
       });
       d.show();
     });
   },
 };
+
+function fetchBarcodePrint(selectedIds, values) {
+    let url = `${
+      window.location.origin
+    }/api/method/frappe.utils.print_format.download_multi_pdf?doctype=Purchase Receipt&name=${JSON.stringify(
+      selectedIds
+    )}&format=${values.print_format}`;
+  
+    if (values.letter_head) {
+      url += `&letterhead=${values.letter_head}`;
+    } else {
+      url += "&no_letterhead=1";
+    }
+  
+    if (values.page_size === "Custom") {
+      url += `&options={"page-height":${values.page_height},"page-width":${values.page_width}}`;
+    } else {
+      url += `&format=${values.print_format}&options={"page-size":"${values.page_size}"}`;
+    }
+  
+    window.location.href = url;
+  }

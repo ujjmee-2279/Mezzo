@@ -122,7 +122,7 @@ frappe.listview_settings["Stock Reconciliation"] = {
           // Handle logic to fetch selected values and call the API
           // Example:
           fetchBarcodePrint(selected_ids, values);
-          d.hide();
+          // d.hide();
         },
       });
       d.show();

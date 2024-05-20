@@ -231,9 +231,9 @@ doctype_list_js = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
-# fixtures = [
-#     # {"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]},
-#     # {"dt": "Item Attribute"},
-#     # {"dt": "Price List"},
-#     {"dt": "Letter Head"},
-# ]
+fixtures = [
+    # {"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]},
+    # {"dt": "Item Attribute"},
+    # {"dt": "Price List"},
+    {"dt": "Letter Head"},
+]
