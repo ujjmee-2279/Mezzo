@@ -1,5 +1,39 @@
-frappe.listview_settings["Item"] = {
+frappe.listview_settings["Purchase Receipt"] = {
+  add_fields: [
+    "supplier",
+    "supplier_name",
+    "base_grand_total",
+    "is_subcontracted",
+    "transporter_name",
+    "is_return",
+    "status",
+    "per_billed",
+    "currency",
+  ],
+  get_indicator: function (doc) {
+    if (cint(doc.is_return) == 1) {
+      return [__("Return"), "gray", "is_return,=,Yes"];
+    } else if (doc.status === "Closed") {
+      return [__("Closed"), "green", "status,=,Closed"];
+    } else if (flt(doc.per_returned, 2) === 100) {
+      return [__("Return Issued"), "grey", "per_returned,=,100"];
+    } else if (flt(doc.grand_total) !== 0 && flt(doc.per_billed, 2) == 0) {
+      return [__("To Bill"), "orange", "per_billed,<,100"];
+    } else if (flt(doc.per_billed, 2) > 0 && flt(doc.per_billed, 2) < 100) {
+      return [__("Partly Billed"), "yellow", "per_billed,<,100"];
+    } else if (flt(doc.grand_total) === 0 || flt(doc.per_billed, 2) === 100) {
+      return [__("Completed"), "green", "per_billed,=,100"];
+    }
+  },
+
   onload: function (listview) {
+    listview.page.add_action_item(__("Purchase Invoice"), () => {
+      erpnext.bulk_transaction_processing.create(
+        listview,
+        "Purchase Receipt",
+        "Purchase Invoice"
+      );
+    });
     listview.page.add_inner_button(__("Barcode Print"), function () {
       var selected_rows = listview.get_checked_items();
       var selected_ids = selected_rows.map((row) => row.name);
@@ -21,7 +55,7 @@ frappe.listview_settings["Item"] = {
               // Define your filter query here
               return {
                 filters: {
-                  doc_type: "Item",
+                  doc_type: "Purchase Receipt",
                 },
               };
             },
@@ -73,9 +107,15 @@ frappe.listview_settings["Item"] = {
               { label: "Material Barcode", value: "Material Barcode" },
             ],
             onchange: function () {
-              let select_val = document.querySelector("select[data-fieldname='type']").value;
-              let page_height_val = document.querySelector("input[data-fieldname='page_height']");
-              let page_width_val = document.querySelector("input[data-fieldname='page_width']");
+              let select_val = document.querySelector(
+                "select[data-fieldname='type']"
+              ).value;
+              let page_height_val = document.querySelector(
+                "input[data-fieldname='page_height']"
+              );
+              let page_width_val = document.querySelector(
+                "input[data-fieldname='page_width']"
+              );
               frappe.call({
                 method: "frappe.client.get_list",
                 args: {
@@ -83,13 +123,17 @@ frappe.listview_settings["Item"] = {
                   filters: {
                     name: select_val,
                   },
-                  fields: ["*"]
+                  fields: ["*"],
                 },
                 callback: function (response) {
-                  page_height_val.value = response.message.map(data => data.page_height_in_mm);
-                  page_width_val.value = response.message.map(data => data.page_width__in_mm);
+                  page_height_val.value = response.message.map(
+                    (data) => data.page_height_in_mm
+                  );
+                  page_width_val.value = response.message.map(
+                    (data) => data.page_width__in_mm
+                  );
                 },
-              })
+              });
             },
           },
           {
@@ -119,25 +163,3 @@ frappe.listview_settings["Item"] = {
     });
   },
 };
-
-function fetchBarcodePrint(selectedIds, values) {
-  let url = `${
-    window.location.origin
-  }/api/method/frappe.utils.print_format.download_multi_pdf?doctype=Item&name=${JSON.stringify(
-    selectedIds
-  )}&format=${values.print_format}`;
-
-  if (values.letter_head) {
-    url += `&letterhead=${values.letter_head}`;
-  } else {
-    url += "&no_letterhead=1";
-  }
-
-  if (values.page_size === "Custom") {
-    url += `&options={"page-height":${values.page_height},"page-width":${values.page_width}}`;
-  } else {
-    url += `&format=${values.print_format}&options={"page-size":"${values.page_size}"}`;
-  }
-
-  window.location.href = url;
-}
