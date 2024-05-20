@@ -1,12 +1,35 @@
 frappe.ui.form.on("Item", {
-
-  onload: function(frm) {
+  onload: function (frm) {
+    // Check if the item is new
     if (!frm.doc.custom_barcode) {
-      // Generate a random 6-digit number
-      var random_number = Math.floor(100000 + Math.random() * 900000);
-      // Set the random number to the custom_barcode field
-      frm.set_value('custom_barcode', random_number);
+      // Fetch the current custom_barcode_counter value
+      frappe.call({
+        method: "frappe.client.get_value",
+        args: {
+          doctype: "Stock Settings",
+          fieldname: "custom_barcode_counter",
+        },
+        callback: function (response) {
+          if (response.message) {
+            var counter_value = response.message.custom_barcode_counter;
+            // Set the custom_barcode field with the counter value
+            frm.set_value("custom_barcode", counter_value);
+          }
+        },
+      });
     }
+  },
+  validate: function (frm) {
+    // Increment the custom_barcode_counter field in Stock Settings
+    frappe.call({
+      method: "mezzo_apparels.utils.barcode_counter_update.increment_custom_barcode_counter",
+      callback: function (response) {
+        if (response.message) {
+          // Log success or handle the response accordingly
+          console.log("Custom Barcode Counter Incremented Successfully");
+        }
+      },
+    });
   },
   custom_barcode: function (frm, cdt, cdn) {
     frappe.call({
