@@ -1,5 +1,5 @@
 {
- "_liked_by": "[]",
+ "_liked_by": "[\"Administrator\"]",
  "absolute_value": 0,
  "align_labels_right": 0,
  "creation": "2024-05-08 12:22:48.544249",
@@ -18,7 +18,7 @@
  "margin_left": 15.0,
  "margin_right": 15.0,
  "margin_top": 15.0,
- "modified": "2024-05-21 11:34:10.942234",
+ "modified": "2024-05-21 13:52:26.854747",
  "modified_by": "Administrator",
  "module": "Mezzo Apparels",
  "name": "Sales Invoice Format",
