@@ -17,6 +17,7 @@ frappe.listview_settings["Stock Reconciliation"] = {
             fieldname: "print_format",
             fieldtype: "Link",
             options: "Print Format",
+            reqd: 1,
             get_query: function () {
               // Define your filter query here
               return {
@@ -30,6 +31,7 @@ frappe.listview_settings["Stock Reconciliation"] = {
             label: "Page Size",
             fieldname: "page_size",
             fieldtype: "Select",
+            reqd: 1,
             options: [
               { label: "A0", value: "A0" },
               { label: "A1", value: "A1" },
@@ -106,14 +108,16 @@ frappe.listview_settings["Stock Reconciliation"] = {
             label: "Page Height (in mm)",
             fieldname: "page_height",
             fieldtype: "Int",
-            default: 0,
+            default: "0",
+            reqd: 0,
             depends_on: "eval:doc.page_size === 'Custom'",
           },
           {
             label: "Page Width (in mm)",
             fieldname: "page_width",
             fieldtype: "Int",
-            default: 0,
+            reqd: 0,
+            default: "0",
             depends_on: "eval:doc.page_size === 'Custom'",
           },
         ],
@@ -121,8 +125,12 @@ frappe.listview_settings["Stock Reconciliation"] = {
         primary_action(values) {
           // Handle logic to fetch selected values and call the API
           // Example:
-          fetchBarcodePrint(selected_ids, values);
-          // d.hide();
+          // console.log(selected_ids, values);
+
+          // CALL THE PRINT BARCODE MULTIPLE PDF FUNCTION
+          PrintBarcode(selected_ids, values);
+          // fetchBarcodePrint(selected_ids, values);
+          d.hide();
         },
       });
       d.show();
@@ -150,4 +158,77 @@ function fetchBarcodePrint(selectedIds, values) {
   }
 
   window.location.href = url;
+}
+
+function PrintBarcode(selected_names, print_configs) {
+  var response_data = "";
+
+  frappe.call({
+    method: "mezzo_apparels.utils.stock_reconciliation.get_barcode_print",
+    args: {
+      selected_names: selected_names,
+      print_configs: print_configs,
+    },
+    freeze: true,
+    freeze_message: "Generating Print Format...",
+    callback: function (response) {
+      console.log(response.message);
+      response_data = response.message;
+
+      var field_list = [];
+      var html_content = `<div style="display:flex;flex-direction:column;gap:24px;">`;
+
+      if (response_data.data) {
+        response_data.data.forEach((data) => {
+          // field_list.push({
+          //   label: data.name,
+          //   fieldname: data.name.toLowerCase(),
+          //   fieldtype: "Button",
+          //   default: data.url,
+          //   onchange: function () {
+          //     window.open(data.url);
+          //   },
+          // });
+          html_content += `
+          <div class="">
+            <h5>${data.name}</h5>
+            <div class="d-flex" style="gap:16px;">
+              <a
+                class="btn btn-xs btn-default px-3 py-2 w-50"
+                target="_blank"
+                href="${data.url}"
+              >
+                Open PDF
+              </a>
+              <a
+                class="btn btn-xs btn-default px-3 py-2 w-50"
+                href="${data.url}"                
+                download=""
+              >
+                Download PDF
+              </a>
+            </div>
+          </div>`;
+        });
+
+        html_content += `</div>`;
+        let print_dialog = new frappe.ui.Dialog({
+          title: "Print Selected Documents",
+          fields: [
+            {
+              label: "Output",
+              fieldname: "output",
+              fieldtype: "HTML",
+              options: html_content,
+            },
+          ],
+        });
+        print_dialog.show();
+
+        // response_data.data.forEach((data) => {
+        //   window.open(data.url);
+        // });
+      }
+    },
+  });
 }
