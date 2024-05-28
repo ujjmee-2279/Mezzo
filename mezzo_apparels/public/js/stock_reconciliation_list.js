@@ -233,7 +233,7 @@
 //   });
 // }
 
-
+// New Code
 frappe.listview_settings["Stock Reconciliation"] = {
 	onload: function (list_view) {
 		list_view.page.add_button("Barcode Print", function() {
