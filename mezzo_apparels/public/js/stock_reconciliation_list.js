@@ -128,7 +128,7 @@ frappe.listview_settings["Stock Reconciliation"] = {
           // console.log(selected_ids, values);
 
           // CALL THE PRINT BARCODE MULTIPLE PDF FUNCTION
-          PrintBarcode(selected_ids, values);
+          fetchBarcodePrint(selected_ids, values);
           // fetchBarcodePrint(selected_ids, values);
           d.hide();
         },
@@ -160,75 +160,75 @@ function fetchBarcodePrint(selectedIds, values) {
   window.location.href = url;
 }
 
-function PrintBarcode(selected_names, print_configs) {
-  var response_data = "";
+// function PrintBarcode(selected_names, print_configs) {
+//   var response_data = "";
 
-  frappe.call({
-    method: "mezzo_apparels.utils.stock_reconciliation.get_barcode_print",
-    args: {
-      selected_names: selected_names,
-      print_configs: print_configs,
-    },
-    freeze: true,
-    freeze_message: "Generating Print Format...",
-    callback: function (response) {
-      console.log(response.message);
-      response_data = response.message;
+//   frappe.call({
+//     method: "mezzo_apparels.utils.stock_reconciliation.get_barcode_print",
+//     args: {
+//       selected_names: selected_names,
+//       print_configs: print_configs,
+//     },
+//     freeze: true,
+//     freeze_message: "Generating Print Format...",
+//     callback: function (response) {
+//       console.log(response.message);
+//       response_data = response.message;
 
-      var field_list = [];
-      var html_content = `<div style="display:flex;flex-direction:column;gap:24px;">`;
+//       var field_list = [];
+//       var html_content = `<div style="display:flex;flex-direction:column;gap:24px;">`;
 
-      if (response_data.data) {
-        response_data.data.forEach((data) => {
-          // field_list.push({
-          //   label: data.name,
-          //   fieldname: data.name.toLowerCase(),
-          //   fieldtype: "Button",
-          //   default: data.url,
-          //   onchange: function () {
-          //     window.open(data.url);
-          //   },
-          // });
-          html_content += `
-          <div class="">
-            <h5>${data.name}</h5>
-            <div class="d-flex" style="gap:16px;">
-              <a
-                class="btn btn-xs btn-default px-3 py-2 w-50"
-                target="_blank"
-                href="${data.url}"
-              >
-                Open PDF
-              </a>
-              <a
-                class="btn btn-xs btn-default px-3 py-2 w-50"
-                href="${data.url}"                
-                download=""
-              >
-                Download PDF
-              </a>
-            </div>
-          </div>`;
-        });
+//       if (response_data.data) {
+//         response_data.data.forEach((data) => {
+//           // field_list.push({
+//           //   label: data.name,
+//           //   fieldname: data.name.toLowerCase(),
+//           //   fieldtype: "Button",
+//           //   default: data.url,
+//           //   onchange: function () {
+//           //     window.open(data.url);
+//           //   },
+//           // });
+//           html_content += `
+//           <div class="">
+//             <h5>${data.name}</h5>
+//             <div class="d-flex" style="gap:16px;">
+//               <a
+//                 class="btn btn-xs btn-default px-3 py-2 w-50"
+//                 target="_blank"
+//                 href="${data.url}"
+//               >
+//                 Open PDF
+//               </a>
+//               <a
+//                 class="btn btn-xs btn-default px-3 py-2 w-50"
+//                 href="${data.url}"                
+//                 download=""
+//               >
+//                 Download PDF
+//               </a>
+//             </div>
+//           </div>`;
+//         });
 
-        html_content += `</div>`;
-        let print_dialog = new frappe.ui.Dialog({
-          title: "Print Selected Documents",
-          fields: [
-            {
-              label: "Output",
-              fieldname: "output",
-              fieldtype: "HTML",
-              options: html_content,
-            },
-          ],
-        });
-        print_dialog.show();
+//         html_content += `</div>`;
+//         let print_dialog = new frappe.ui.Dialog({
+//           title: "Print Selected Documents",
+//           fields: [
+//             {
+//               label: "Output",
+//               fieldname: "output",
+//               fieldtype: "HTML",
+//               options: html_content,
+//             },
+//           ],
+//         });
+//         print_dialog.show();
 
-        // response_data.data.forEach((data) => {
-        //   window.open(data.url);
-        // });
-      }
-    },
-  });
-}
+//         // response_data.data.forEach((data) => {
+//         //   window.open(data.url);
+//         // });
+//       }
+//     },
+//   });
+// }
