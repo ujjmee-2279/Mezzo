@@ -63,10 +63,11 @@ doctype_list_js = {
 # ----------
 
 # add methods and filters to jinja environment
-# jinja = {
-# 	"methods": "mezzo_apparels.utils.jinja_methods",
-# 	"filters": "mezzo_apparels.utils.jinja_filters"
-# }
+jinja = {
+	"methods": [
+		"mezzo_apparels.utils.barcode_tester.generate_barcode"
+	]
+}
 
 # Installation
 # ------------
