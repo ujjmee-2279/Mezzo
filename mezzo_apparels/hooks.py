@@ -120,9 +120,9 @@ jinja = {
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"Item": "mezzo_apparels.myitem.myItem"
+}
 
 # Document Events
 # ---------------
@@ -233,9 +233,9 @@ jinja = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
-fixtures = [
-    # {"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]},
-    # {"dt": "Item Attribute"},
-    # {"dt": "Price List"},
-    {"dt": "Letter Head"},
-]
+# fixtures = [
+#     # {"dt": "Custom Field", "filters": [["module", "=", "Mezzo Apparels"]]},
+#     # {"dt": "Item Attribute"},
+#     # {"dt": "Price List"},
+#     {"dt": "Letter Head"},
+# ]
