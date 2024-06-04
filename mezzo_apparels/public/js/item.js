@@ -1,36 +1,23 @@
 frappe.ui.form.on("Item", {
-  onload: function (frm) {
-    // Check if the item is new
-    if (!frm.doc.custom_barcode) {
-      // Fetch the current custom_barcode_counter value
-      frappe.call({
-        method: "frappe.client.get_value",
-        args: {
-          doctype: "Stock Settings",
-          fieldname: "custom_barcode_counter",
-        },
-        callback: function (response) {
-          if (response.message) {
-            var counter_value = response.message.custom_barcode_counter;
-            // Set the custom_barcode field with the counter value
-            frm.set_value("custom_barcode", counter_value);
-          }
-        },
-      });
-    }
-  },
-  validate: function (frm) {
-    // Increment the custom_barcode_counter field in Stock Settings
-    frappe.call({
-      method: "mezzo_apparels.utils.barcode_counter_update.increment_custom_barcode_counter",
-      callback: function (response) {
-        if (response.message) {
-          // Log success or handle the response accordingly
-          console.log("Custom Barcode Counter Incremented Successfully");
-        }
-      },
-    });
-  },
+  // after_save: function (frm) {
+  //   // Fetch custom_barcode_counter value from Stock Settings
+  //   if (!frm.doc.custom_barcode && !frm.doc.has_variants) {
+  //     frappe.call({
+  //       method: "frappe.client.get_value",
+  //       args: {
+  //         doctype: "Stock Settings",
+  //         fieldname: "custom_barcode_counter",
+  //       },
+  //       callback: function (response) {
+  //         if (response && response.message) {
+  //           var customBarcodeCounter = response.message.custom_barcode_counter;
+  //           // Set custom field value
+  //           frm.set_value("custom_barcode", customBarcodeCounter);
+  //         }
+  //       },
+  //     });
+  //   }
+  // },
   custom_barcode: function (frm, cdt, cdn) {
     frappe.call({
       method: "mezzo_apparels.utils.barcode_datasrc.generate_barcode",
