@@ -17,7 +17,8 @@ class myItem(Document):
                 if barcode.barcode == str(self.custom_barcode):  # Adjusted to check for existing barcode
                     barcode_entry = barcode
                     break
-
+                
+            # Barcode Entry
             if barcode_entry:
                 barcode_entry.barcode = self.custom_barcode
             else:
