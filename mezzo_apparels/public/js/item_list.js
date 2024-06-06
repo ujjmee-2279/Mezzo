@@ -131,57 +131,50 @@ frappe.listview_settings["Item"] = {
               expanded_ids.push(id);
             }
           });
-          // console.log(expanded_ids)
 
-          // Update custom_copy_number field for each selected item
-          selected_ids.forEach((id) => {
-            frappe.call({
-              method: "frappe.client.set_value",
-              args: {
-                doctype: "Item",
-                name: id,
-                fieldname: "custom_copy_numbers",
-                value: values[`copies_${id}`],
-              },
-              callback: function (response) {
-                if (response.message) {
-                  // Success message
-                  console.log(`Updated custom_copy_number for ${id}`);
-                } else {
-                  // Error message
-                  console.log(`Error updating custom_copy_number for ${id}`);
-                }
-              },
-            });
-            frappe.call({
-              method: "frappe.client.set_value",
-              args: {
-                doctype: "Item",
-                name: id,
-                fieldname: "custom_format_type",
-                value: values.type,
-              },
-              callback: function (response) {
-                if (response.message) {
-                  // Success message
-                  console.log(`Updated custom_copy_number for ${id}`);
-                } else {
-                  // Error message
-                  console.log(`Error updating custom_copy_number for ${id}`);
-                }
-              },
+          let updatePromises = selected_ids.map((id) => {
+            return new Promise((resolve, reject) => {
+              frappe.call({
+                method: "frappe.client.set_value",
+                args: {
+                  doctype: "Item",
+                  name: id,
+                  fieldname: {
+                    custom_copy_numbers: values[`copies_${id}`],
+                    custom_format_type: values.type,
+                  },
+                },
+                callback: function (response) {
+                  if (response.message) {
+                    console.log(
+                      `Updated custom_copy_numbers and custom_format_type for ${id}`
+                    );
+                    resolve();
+                  } else {
+                    console.log(
+                      `Error updating custom_copy_numbers and custom_format_type for ${id}`
+                    );
+                    reject();
+                  }
+                },
+              });
             });
           });
 
-          setTimeout(() => {
-            if (values.type === "Material Barcode") {
-              fetchBarcodePrint(expanded_ids, values);
-            } else {
-              fetchBarcodePrint(selected_ids,values)
-            }
-          }, 5000);
-
-          d.hide();
+          Promise.all(updatePromises)
+            .then(() => {
+              setTimeout(() => {
+                if (values.type === "Material Barcode") {
+                  fetchBarcodePrint(expanded_ids, values);
+                } else {
+                  fetchBarcodePrint(selected_ids, values);
+                }
+                d.hide();
+              }, 5000);
+            })
+            .catch((error) => {
+              console.error("Error in updating some fields: ", error);
+            });
         },
       });
       d.show();

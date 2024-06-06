@@ -12,7 +12,6 @@ frappe.ui.form.on("Sales Order", {
     });
   },
 
-
   custom_parent_item: function (frm) {
     if (frm.doc.custom_parent_item) {
       // Check if custom_parent_item has a value
@@ -73,7 +72,14 @@ frappe.ui.form.on("Sales Order", {
               }
             });
 
-            dialogInstance.hide();
+            // Remove the dialog from the DOM
+            dialogInstance.$wrapper.remove();
+            dialogInstance = null; // Reset the dialog instance
+            // Remove modal-backdrop fade divs from the DOM
+            document.querySelectorAll(".modal-backdrop.fade").forEach((el) => {
+              el.remove();
+            });
+
             frm.refresh_field("items");
           },
         });
@@ -160,7 +166,7 @@ frappe.ui.form.on("Sales Order", {
           fields: [
             {
               label: "Variants",
-              fieldname : "variants",
+              fieldname: "variants",
               fieldtype: "Data",
               read_only: true,
               default: frm.doc.custom_barcode_scan,
@@ -210,7 +216,15 @@ frappe.ui.form.on("Sales Order", {
               }
             });
 
-            dialogInstance2.hide();
+            // Remove the dialog from the DOM
+            dialogInstance2.$wrapper.remove();
+            dialogInstance2 = null; // Reset the dialog instance
+
+            // Remove modal-backdrop fade divs from the DOM
+            document.querySelectorAll(".modal-backdrop.fade").forEach((el) => {
+              el.remove();
+            });
+
             frm.refresh_field("items");
           },
         });
