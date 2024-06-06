@@ -18,29 +18,29 @@ frappe.ui.form.on("Item", {
   //     });
   //   }
   // },
-  custom_barcode: function (frm, cdt, cdn) {
-    frappe.call({
-      method: "mezzo_apparels.utils.barcode_datasrc.generate_barcode",
-      args: {
-        barcode_value: frm.doc.custom_barcode,
-      },
-      callback: function (r) {
-        var barcode_table_length = frm.doc.barcodes.length;
-        if (barcode_table_length === 0) {
-          var a = frm.add_child("barcodes");
-          a.barcode = frm.doc.custom_barcode;
-          a.custom_barcode_image = r.message;
-          frm.refresh_field("barcodes");
-        } else {
-          $.each(frm.doc.barcodes || [], function (i, d) {
-            d.barcode = frm.doc.custom_barcode;
-            d.custom_barcode_image = r.message;
-          });
-          frm.refresh_field("barcodes");
-        }
-      },
-    });
-  },
+  // custom_barcode: function (frm, cdt, cdn) {
+  //   frappe.call({
+  //     method: "mezzo_apparels.utils.barcode_datasrc.generate_barcode",
+  //     args: {
+  //       barcode_value: frm.doc.custom_barcode,
+  //     },
+  //     callback: function (r) {
+  //       var barcode_table_length = frm.doc.barcodes.length;
+  //       if (barcode_table_length === 0) {
+  //         var a = frm.add_child("barcodes");
+  //         a.barcode = frm.doc.custom_barcode;
+  //         a.custom_barcode_image = r.message;
+  //         frm.refresh_field("barcodes");
+  //       } else {
+  //         $.each(frm.doc.barcodes || [], function (i, d) {
+  //           d.barcode = frm.doc.custom_barcode;
+  //           d.custom_barcode_image = r.message;
+  //         });
+  //         frm.refresh_field("barcodes");
+  //       }
+  //     },
+  //   });
+  // },
   custom_mrp: function (frm) {
     frappe.call({
       method: "frappe.client.get_list",
