@@ -62,9 +62,15 @@ frappe.listview_settings["Item"] = {
           ],
           depends_on: "eval:doc.page_size === 'Custom'",
           onchange: function () {
-            let select_val = document.querySelector("select[data-fieldname='type']").value;
-            let page_height_val = document.querySelector("input[data-fieldname='page_height']");
-            let page_width_val = document.querySelector("input[data-fieldname='page_width']");
+            let select_val = document.querySelector(
+              "select[data-fieldname='type']"
+            ).value;
+            let page_height_val = document.querySelector(
+              "input[data-fieldname='page_height']"
+            );
+            let page_width_val = document.querySelector(
+              "input[data-fieldname='page_width']"
+            );
             frappe.call({
               method: "frappe.client.get_list",
               args: {
@@ -72,13 +78,17 @@ frappe.listview_settings["Item"] = {
                 filters: {
                   name: select_val,
                 },
-                fields: ["*"]
+                fields: ["*"],
               },
               callback: function (response) {
-                page_height_val.value = response.message.map(data => data.page_height_in_mm);
-                page_width_val.value = response.message.map(data => data.page_width__in_mm);
+                page_height_val.value = response.message.map(
+                  (data) => data.page_height_in_mm
+                );
+                page_width_val.value = response.message.map(
+                  (data) => data.page_width__in_mm
+                );
               },
-            })
+            });
           },
         },
         {
@@ -97,7 +107,7 @@ frappe.listview_settings["Item"] = {
         },
       ];
 
-      selected_ids.forEach(id => {
+      selected_ids.forEach((id) => {
         fields.push({
           label: `Number of copies for ${id}`,
           fieldname: `copies_${id}`,
@@ -112,16 +122,64 @@ frappe.listview_settings["Item"] = {
         fields: fields,
         primary_action_label: "Submit",
         primary_action(values) {
-          let copies = {};
+          // console.log(values);
+          let copies = [];
           let expanded_ids = [];
-          selected_ids.forEach(id => {
+          selected_ids.forEach((id) => {
             copies[id] = values[`copies_${id}`];
             for (let i = 0; i < copies[id]; i++) {
               expanded_ids.push(id);
             }
           });
+          // console.log(expanded_ids)
 
-          fetchBarcodePrint(expanded_ids, values);
+          // Update custom_copy_number field for each selected item
+          selected_ids.forEach((id) => {
+            frappe.call({
+              method: "frappe.client.set_value",
+              args: {
+                doctype: "Item",
+                name: id,
+                fieldname: "custom_copy_numbers",
+                value: values[`copies_${id}`],
+              },
+              callback: function (response) {
+                if (response.message) {
+                  // Success message
+                  console.log(`Updated custom_copy_number for ${id}`);
+                } else {
+                  // Error message
+                  console.log(`Error updating custom_copy_number for ${id}`);
+                }
+              },
+            });
+            frappe.call({
+              method: "frappe.client.set_value",
+              args: {
+                doctype: "Item",
+                name: id,
+                fieldname: "custom_format_type",
+                value: values.type,
+              },
+              callback: function (response) {
+                if (response.message) {
+                  // Success message
+                  console.log(`Updated custom_copy_number for ${id}`);
+                } else {
+                  // Error message
+                  console.log(`Error updating custom_copy_number for ${id}`);
+                }
+              },
+            });
+          });
+
+          setTimeout(() => {
+            if (values.type === "Material Barcode") {
+              fetchBarcodePrint(expanded_ids, values);
+            } else {
+              fetchBarcodePrint(selected_ids,values)
+            }
+          }, 5000);
 
           d.hide();
         },
