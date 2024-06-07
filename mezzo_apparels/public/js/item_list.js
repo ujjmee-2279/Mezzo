@@ -182,6 +182,7 @@ frappe.listview_settings["Item"] = {
   },
 };
 
+// Function for fetching print formats
 function fetchBarcodePrint(expandedIds, values) {
   let url = `${
     window.location.origin
