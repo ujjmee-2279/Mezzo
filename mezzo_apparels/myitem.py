@@ -18,7 +18,7 @@ class myItem(Document):
                     barcode_entry = barcode
                     break
                 
-            # Barcode Entry
+            # Barcode Entry Logic
             if barcode_entry:
                 barcode_entry.barcode = self.custom_barcode
             else:
