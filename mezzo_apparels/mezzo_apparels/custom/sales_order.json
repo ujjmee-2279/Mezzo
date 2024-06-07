@@ -161,7 +161,7 @@
    "insert_after": "scan_barcode",
    "is_system_generated": 0,
    "is_virtual": 0,
-   "label": "Barcode Scan",
+   "label": "Select Using Scan",
    "length": 0,
    "link_filters": null,
    "mandatory_depends_on": null,
