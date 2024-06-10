@@ -1,5 +1,6 @@
 frappe.ui.form.on("Sales Order", {
   onload: function (frm) {
+    // Parent Items Filter
     frm.set_query("custom_parent_item", function () {
       return {
         filters: [["Item", "has_variants", "=", "1"]],
