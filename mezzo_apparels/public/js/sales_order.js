@@ -79,6 +79,8 @@ frappe.ui.form.on("Sales Order", {
             document.querySelectorAll(".modal-backdrop.fade").forEach((el) => {
               el.remove();
             });
+            // Updating body overflow property
+            document.body.style.overflow = "auto";
 
             frm.refresh_field("items");
           },
@@ -224,6 +226,9 @@ frappe.ui.form.on("Sales Order", {
             document.querySelectorAll(".modal-backdrop.fade").forEach((el) => {
               el.remove();
             });
+
+            // Updating body scroll property
+            document.body.style.overflow = "auto";
 
             frm.refresh_field("items");
           },
