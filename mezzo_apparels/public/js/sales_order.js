@@ -320,7 +320,7 @@ frappe.ui.form.on("Sales Order", {
         },
       });
     }
-  },
+  }
 });
 
 let dialogInstance; // Define dialog instance outside the function
