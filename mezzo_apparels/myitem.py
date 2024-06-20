@@ -3,6 +3,8 @@ from frappe.model.document import Document
 
 class myItem(Document):
     def after_insert(self):
+        self.update_item_price("Standard MRP", self.custom_mrp)
+        self.update_item_price("Standard WSP", self.custom_wsp)
         if not self.custom_barcode and not self.has_variants:
             stock_settings = frappe.get_single("Stock Settings")
             stock_settings.custom_barcode_counter = int(stock_settings.custom_barcode_counter) + 1
@@ -29,4 +31,31 @@ class myItem(Document):
 
             self.save(ignore_permissions=True)
             frappe.db.commit()
+    def on_update(self):
+        self.update_item_price("Standard MRP", self.custom_mrp)
+        self.update_item_price("Standard WSP", self.custom_wsp)
+
+    def update_item_price(self, price_list, price_rate):
+        existing_item_prices = frappe.get_list("Item Price", 
+                                               filters={
+                                                   "item_code": self.item_code,
+                                                   "price_list": price_list
+                                               }, 
+                                               fields=["name", "price_list_rate"])
         
+        if not existing_item_prices:
+            # If no records found, insert a new record
+            new_item_price = frappe.get_doc({
+                "doctype": "Item Price",
+                "item_code": self.item_code,
+                "price_list_rate": price_rate,
+                "price_list": price_list
+            })
+            new_item_price.insert()
+            frappe.msgprint(f"{price_list} has been successfully inserted in Item Price List!")
+        else:
+            # If record found, update existing record
+            item_price_doc = frappe.get_doc("Item Price", existing_item_prices[0].name)
+            item_price_doc.price_list_rate = price_rate
+            item_price_doc.save()
+            frappe.msgprint(f"{price_list} has been successfully updated in Item Price List!")    
