@@ -52,7 +52,7 @@ class myItem(Document):
                                                 "price_list": price_list
                                             }, 
                                             fields=["name", "price_list_rate"])
-        # My Custom Logic
+        # My Custom-Logic
         if not existing_item_prices:
             # If no records found, insert a new record
             new_item_price = frappe.get_doc({
