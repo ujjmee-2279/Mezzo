@@ -66,7 +66,8 @@ doctype_list_js = {
 # add methods and filters to jinja environment
 jinja = {
 	"methods": [
-		"mezzo_apparels.utils.barcode_tester.generate_barcode"
+		"mezzo_apparels.utils.barcode_tester.generate_barcode",
+        "mezzo_apparels.utils.purchase_order_grouping.aggregate_data"
 	]
 }
 
