@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{s}-{m}-{l}-{xl}-{2xl}",
+ "creation": "2024-07-19 18:23:44.120317",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "s",
+  "m",
+  "l",
+  "xl",
+  "2xl"
+ ],
+ "fields": [
+  {
+   "fieldname": "s",
+   "fieldtype": "Int",
+   "label": "S"
+  },
+  {
+   "fieldname": "m",
+   "fieldtype": "Int",
+   "label": "M"
+  },
+  {
+   "fieldname": "l",
+   "fieldtype": "Int",
+   "label": "L"
+  },
+  {
+   "fieldname": "xl",
+   "fieldtype": "Int",
+   "label": "XL"
+  },
+  {
+   "fieldname": "2xl",
+   "fieldtype": "Int",
+   "label": "2XL"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-08 13:40:19.267711",
+ "modified_by": "Administrator",
+ "module": "Mezzo Apparels",
+ "name": "Default Variant Ratio",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
